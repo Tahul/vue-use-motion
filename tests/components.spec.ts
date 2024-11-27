@@ -167,7 +167,8 @@ describe('`<Motion>` component', async () => {
 
     // Trigger hovered
     await wrapper.trigger('mouseenter')
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 50))
 
     // `custom-preset` sets scale: 1.2 and `hovered` prop sets y: 100
     expect(el.style.transform).toMatchInlineSnapshot(`"translate3d(0px,100px,0px) scale(1.2)"`)
@@ -189,6 +190,7 @@ describe('`<Motion>` component', async () => {
 
     const el = wrapper.element as HTMLDivElement
     await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 50))
 
     // Renders enter
     expect(el.style.transform).toEqual('scale(2) translateZ(0px)')
@@ -196,6 +198,7 @@ describe('`<Motion>` component', async () => {
     // Trigger rerender by updating slot variable
     counter.value++
     await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 50))
 
     // Variant style is preserved after rerender/update
     expect(el.style.transform).toEqual('scale(2) translateZ(0px)')

@@ -15,7 +15,20 @@ const mouth = ref<SVGElement>()
 const eyeLeft = ref<SVGElement>()
 const eyeRight = ref<SVGElement>()
 
-const refs = [buttons, browser, card, search, circleBottom, circleTop, head, mouth, eyeLeft, eyeRight, armLeft, armRight]
+const refs = [
+  buttons,
+  browser,
+  card,
+  search,
+  circleBottom,
+  circleTop,
+  head,
+  mouth,
+  eyeLeft,
+  eyeRight,
+  armLeft,
+  armRight,
+]
 
 refs.forEach((ref, index) => {
   const { variant } = useMotion(ref, {
@@ -50,8 +63,17 @@ refs.forEach((ref, index) => {
 </script>
 
 <template>
-  <Motion :initial="{ y: 100, opacity: 0 }" :enter="{ y: 0, opacity: 1 }" :delay="100">
-    <svg height="340px" viewBox="0 0 1141 956" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <Motion
+    :initial="{ y: 100, opacity: 0 }"
+    :enter="{ y: 0, opacity: 1 }"
+    :delay="100"
+  >
+    <svg
+      height="340px"
+      viewBox="0 0 1141 956"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         ref="buttons"
         fill-rule="evenodd"
@@ -106,7 +128,13 @@ refs.forEach((ref, index) => {
           stroke-linecap="round"
           stroke-linejoin="round"
         />
-        <path d="M862.075 296.226C862.075 296.226 886.687 278.045 927 283.085" stroke="var(--colors-primary-700)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+        <path
+          d="M862.075 296.226C862.075 296.226 886.687 278.045 927 283.085"
+          stroke="var(--colors-primary-700)"
+          stroke-width="8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
         <path
           d="M827.116 298.229C827.116 298.229 860.975 261.166 914.015 261.166"
           stroke="var(--colors-primary-700)"
@@ -115,7 +143,15 @@ refs.forEach((ref, index) => {
           stroke-linejoin="round"
         />
       </g>
-      <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="251" y="361" width="396" height="275">
+      <mask
+        id="mask0"
+        mask-type="alpha"
+        maskUnits="userSpaceOnUse"
+        x="251"
+        y="361"
+        width="396"
+        height="275"
+      >
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -130,16 +166,48 @@ refs.forEach((ref, index) => {
           d="M286.116 425.069C254.061 461.774 239.701 514.406 263.952 555.783C282.474 587.384 318.552 607.383 355.47 619.702C411.533 638.409 474.914 642.46 530.76 623.223C586.606 603.985 633.193 559.399 643.466 505.803C651.538 463.693 644.924 412.408 586.391 381.722C541.385 358.128 362.388 337.733 286.116 425.069Z"
           fill="var(--colors-primary-400)"
         />
-        <path d="M246.298 369.59L650.831 379.327L650.807 380.328L246.274 370.591L246.298 369.59Z" fill="white" />
-        <path d="M650.795 415.028L650.843 416.028L246.31 435.501L246.262 434.501L650.795 415.028Z" fill="white" />
-        <path d="M650.768 443.428L650.869 444.424L246.337 485.804L246.235 484.808L650.768 443.428Z" fill="white" />
-        <path d="M246.346 511.584L650.878 560.267L650.759 561.261L246.227 512.579L246.346 511.584Z" fill="white" />
-        <path d="M246.334 535.924L650.866 574.87L650.771 575.867L246.238 536.921L246.334 535.924Z" fill="white" />
-        <path d="M246.3 582.982L650.833 594.341L650.805 595.342L246.272 583.983L246.3 582.982Z" fill="white" />
-        <path d="M650.773 622.741L650.864 623.738L246.332 661.062L246.24 660.064L650.773 622.741Z" fill="white" />
-        <path d="M246.306 501.844L650.839 518.072L650.799 519.073L246.266 502.845L246.306 501.844Z" fill="white" />
+        <path
+          d="M246.298 369.59L650.831 379.327L650.807 380.328L246.274 370.591L246.298 369.59Z"
+          fill="white"
+        />
+        <path
+          d="M650.795 415.028L650.843 416.028L246.31 435.501L246.262 434.501L650.795 415.028Z"
+          fill="white"
+        />
+        <path
+          d="M650.768 443.428L650.869 444.424L246.337 485.804L246.235 484.808L650.768 443.428Z"
+          fill="white"
+        />
+        <path
+          d="M246.346 511.584L650.878 560.267L650.759 561.261L246.227 512.579L246.346 511.584Z"
+          fill="white"
+        />
+        <path
+          d="M246.334 535.924L650.866 574.87L650.771 575.867L246.238 536.921L246.334 535.924Z"
+          fill="white"
+        />
+        <path
+          d="M246.3 582.982L650.833 594.341L650.805 595.342L246.272 583.983L246.3 582.982Z"
+          fill="white"
+        />
+        <path
+          d="M650.773 622.741L650.864 623.738L246.332 661.062L246.24 660.064L650.773 622.741Z"
+          fill="white"
+        />
+        <path
+          d="M246.306 501.844L650.839 518.072L650.799 519.073L246.266 502.845L246.306 501.844Z"
+          fill="white"
+        />
       </g>
-      <mask id="mask1" mask-type="alpha" maskUnits="userSpaceOnUse" x="335" y="635" width="251" height="158">
+      <mask
+        id="mask1"
+        mask-type="alpha"
+        maskUnits="userSpaceOnUse"
+        x="335"
+        y="635"
+        width="251"
+        height="158"
+      >
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -203,7 +271,15 @@ refs.forEach((ref, index) => {
           fill="white"
         />
       </g>
-      <mask id="mask2" mask-type="alpha" maskUnits="userSpaceOnUse" x="421" y="163" width="190" height="176">
+      <mask
+        id="mask2"
+        mask-type="alpha"
+        maskUnits="userSpaceOnUse"
+        x="421"
+        y="163"
+        width="190"
+        height="176"
+      >
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
@@ -259,7 +335,15 @@ refs.forEach((ref, index) => {
           fill="white"
         />
       </g>
-      <mask id="mask3" mask-type="alpha" maskUnits="userSpaceOnUse" x="513" y="257" width="48" height="23">
+      <mask
+        id="mask3"
+        mask-type="alpha"
+        maskUnits="userSpaceOnUse"
+        x="513"
+        y="257"
+        width="48"
+        height="23"
+      >
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"

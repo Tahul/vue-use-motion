@@ -7,16 +7,28 @@
     </div>
     <MotionGroup preset="slideVisibleLeft" :duration="600">
       <section>
-        <h3>Product 1</h3>
-        <p>Description text</p>
+        <h3 class="text-sm">
+          Product 1
+        </h3>
+        <p class="text-xs">
+          Description text
+        </p>
       </section>
       <section>
-        <h3>Product 2</h3>
-        <p>Description text</p>
+        <h3 class="text-sm">
+          Product 2
+        </h3>
+        <p class="text-xs">
+          Description text
+        </p>
       </section>
       <section>
-        <h3>Product 3</h3>
-        <p>Description text</p>
+        <h3 class="text-sm">
+          Product 3
+        </h3>
+        <p class="text-xs">
+          Description text
+        </p>
       </section>
     </MotionGroup>
   </div>
@@ -29,7 +41,7 @@
   overflow-y: scroll;
   overflow-x: hidden;
   text-align: center;
-  border: 1px solid #222;
+  border: 1px solid #282828;
   border-radius: 0.5em;
 }
 

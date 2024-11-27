@@ -1,8 +1,10 @@
-<script setup="props" lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
 import type { PropType } from 'vue'
 import { useMotion } from '@vueuse/motion'
+import defu from 'defu'
 import { slugify } from '../../../src/utils/slugify'
+import Face from './Face.vue'
 
 const props = defineProps({
   name: {
@@ -17,25 +19,61 @@ const isReplaying = ref(false)
 const replayButton = ref<SVGElement>()
 const demoElement = ref<HTMLElement>()
 
-const { apply } = useMotion(demoElement, props.preset)
+const tweaks: Record<'delay' | 'duration', number> = {
+  duration: 600,
+  delay: 0,
+}
+
+const configWithDuration = computed(() => {
+  const config = defu({}, structuredClone(props.preset || {}))
+
+  for (const transitionKey of ['delay', 'duration'] as const) {
+    if (!tweaks[transitionKey])
+      continue
+
+    const transitionValueParsed = tweaks[transitionKey]
+
+    // TODO: extract to utility function
+    // Apply transition property to existing variants where applicable
+    for (const variantKey of ['enter', 'visible', 'visibleOnce'] as const) {
+      const variantConfig = config[variantKey]
+
+      if (variantConfig == null)
+        continue
+
+      variantConfig.transition ??= {}
+      variantConfig.transition[transitionKey] = transitionValueParsed
+    }
+  }
+
+  return config
+})
+
+const { apply, set } = useMotion(demoElement, {
+  ...configWithDuration.value,
+})
 
 const replayInstance = useMotion(replayButton, {
+  ...useAppConfig().motions.codeGroupButton,
   initial: {
+    ...(useAppConfig().motions.codeGroupButton?.initial ?? {}),
     rotate: 0,
   },
 })
 
 async function replay() {
-  if (isReplaying.value)
-    return
-
   isReplaying.value = true
 
+  replayInstance.set({
+    rotate: 0,
+  })
   replayInstance.apply({
-    rotate: -360,
+    rotate: -180,
   })
 
-  await apply(props.preset.initial)
+  if (props.preset.initial) {
+    await set(props.preset.initial)
+  }
 
   if (props.preset.visible)
     await apply(props.preset.visible)
@@ -46,48 +84,60 @@ async function replay() {
   if (props.preset.enter)
     await apply(props.preset.enter)
 
-  replayInstance.set({ rotate: 0 })
-
   isReplaying.value = false
 }
+
+const { data } = await useAsyncData(`preset-${props.name}`, () =>
+  parseMarkdown(
+    [
+      `::code-group`,
+      ...[
+        '```vue [<Motion />]',
+        // '<template>',
+        `<Motion preset="${props.name}" :duration="600" />`,
+        // '</template>',
+        '```',
+      ],
+      ...[
+        '```vue [v-motion]',
+        // '<template>',
+        `<div v-motion-${slugify(props.name)} :duration="600" />`,
+        // '</template>',
+        '```',
+      ],
+      ...[
+        '```json [Preset]',
+        `${JSON.stringify(props.preset, null, 2)}`,
+        '```',
+      ],
+      `::`,
+    ].join('\n'),
+  ))
 </script>
 
 <template>
-  <div class="presetSection">
+  <Motion class="presetSection" v-bind="$nuxt._appConfig.motions.presetSection">
     <ProseH3 :id="name" class="capitalize">
       {{ name.replace(/[A-Z]/g, (s: any) => ` ${s}`) }}
     </ProseH3>
 
     <div class="content">
-      <div class="demoCode">
-        <ProseCodeInline>
-          {{ `
-          <div v-motion-${slugify(name)} />
-          ` }}
-        </ProseCodeInline>
-      </div>
+      <ContentRendererMarkdown class="demoCode" :value="data ?? {}" />
 
-      <div class="demoContainer relative">
-        <button class="absolute right-4 top-4" @click="replay">
-          <Icon ref="replayButton" name="heroicons-outline:refresh" class="h-6 w-6" />
-        </button>
-        <div ref="demoElement" class="demoElement" @click="replay">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
-            <path
-              class="a"
-              fill="#35495e"
-              d="M735.07,67.05V531.58c0,129.83-105.24,235.07-235.07,235.07S264.93,661.41,264.93,531.58V67.05h166.3V531.58a68.77,68.77,0,1,0,137.54,0V67.05Z"
-            />
-            <path
-              class="b"
-              fill="#41b883"
-              d="M901.36,67.05V531.58C901.36,753.25,721.67,933,500,933S98.64,753.25,98.64,531.58V67.05H264.93V531.58c0,129.83,105.25,235.07,235.07,235.07S735.07,661.41,735.07,531.58V67.05Z"
-            />
-          </svg>
-        </div>
+      <div class="demoContainer relative" @click="replay">
+        <client-only>
+          <button class="absolute right-4 top-4">
+            <div ref="replayButton" class="replayButton">
+              <Icon name="heroicons-outline:refresh" class="h-6 w-6" />
+            </div>
+          </button>
+          <div ref="demoElement" class="demoElement">
+            <Face v-once />
+          </div>
+        </client-only>
       </div>
     </div>
-  </div>
+  </Motion>
 </template>
 
 <style scoped>
@@ -99,15 +149,18 @@ async function replay() {
 
 .content {
   display: flex;
+  gap: 1em;
+  align-items: center;
 }
 
 .demoCode {
-  flex: 1;
+  flex: 2;
   width: 50%;
+  height: 100%;
 }
 
 .demoContainer {
-  @apply bg-blue-50/25 dark:bg-blue-900/25;
+  border: 1px solid #282828;
   width: 50%;
   flex: 1;
   display: flex;
@@ -116,6 +169,12 @@ async function replay() {
   min-height: 12rem;
   overflow: hidden;
   border-radius: 16px;
+}
+
+.replayButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .demoElement {

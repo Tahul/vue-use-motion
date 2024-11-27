@@ -1,0 +1,36 @@
+title: '@vueuse/motion'
+description: Components & composables putting your components in motion.
+hero:
+  description: Components & composables putting your components in motion.
+  orientation: horizontal
+  links:
+    - label: Get Started
+      trailingIcon: i-heroicons-arrow-right-20-solid
+      to: /getting-started
+      size: lg
+    - label: Open in GitHub
+      icon: i-simple-icons-github
+      size: lg
+      color: white
+      to: https://github.com/vueuse/motion
+      target: _blank
+  code: |
+    ```bash
+    pnpm i @vueuse/motion
+    ```
+
+features:
+  title: 'Let''s put things in motion'
+
+  items:
+    - title: Smooth animations
+      description: Based on Popmotion
+    - title: Declarative API
+      description: Inspired by Framer Motion
+    - title: Plug & play
+      description: with 20+ presets
+    - title: SSR Ready
+      description:
+    - title: First-class support for Nuxt
+    - title: Written in TypeScript
+    - title: Lightweight with <20kb bundle size

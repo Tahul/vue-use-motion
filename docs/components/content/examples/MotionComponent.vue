@@ -20,7 +20,7 @@
   overflow-y: scroll;
   overflow-x: hidden;
   text-align: center;
-  border: 1px solid #222;
+  border: 1px solid #282828;
   border-radius: 0.5em;
 }
 
