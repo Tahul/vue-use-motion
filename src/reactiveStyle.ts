@@ -1,27 +1,26 @@
 import type { Ref } from 'vue'
 import { reactive, ref, watch } from 'vue'
-import type { StyleProperties } from './types'
+import type { SVGPathProperties, StyleProperties } from './types'
 import { getValueAsType, getValueType } from './utils/style'
-
 /**
  * Reactive style object implementing all native CSS properties.
  *
  * @param props
  */
-export function reactiveStyle(props: StyleProperties = {}) {
+export function reactiveStyle(props: StyleProperties | SVGPathProperties = {}) {
   // Reactive StyleProperties object
-  const state = reactive<StyleProperties>({
+  const state = reactive<StyleProperties | SVGPathProperties>({
     ...props,
   })
 
-  const style = ref({}) as Ref<StyleProperties>
+  const style = ref({}) as Ref<StyleProperties | SVGPathProperties>
 
   // Reactive DOM Element compatible `style` object bound to state
   watch(
     state,
     () => {
       // Init result object
-      const result: StyleProperties = {}
+      const result: StyleProperties | SVGPathProperties = {}
 
       for (const [key, value] of Object.entries(state)) {
         // Get value type for key

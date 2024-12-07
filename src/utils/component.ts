@@ -15,6 +15,7 @@ import * as presets from '../presets'
 import type { MotionInstance } from '../types/instance'
 import type {
   MotionVariants,
+  SVGPathProperties,
   StyleProperties,
   Variant,
 } from '../types/variants'
@@ -228,7 +229,7 @@ export function setupMotionComponent(
   }
 
   // Set node style and register to `instances` on mount
-  function setNodeInstance(node: VNode, index: number, style: StyleProperties) {
+  function setNodeInstance(node: VNode, index: number, style: StyleProperties | SVGPathProperties) {
     node.props ??= {}
     node.props.style ??= {}
 

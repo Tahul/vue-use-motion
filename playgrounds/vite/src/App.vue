@@ -3,6 +3,7 @@ import Delay from './demos/Delay.vue'
 import Editor from './demos/Editor.vue'
 import Transitions from './demos/Transitions.vue'
 import Sandbox from './demos/Sandbox.vue'
+import SVGPath from './demos/SVGPath.vue'
 
 const sandbox = false
 </script>
@@ -33,6 +34,12 @@ const sandbox = false
       </h1>
 
       <Transitions class="mt-6 mb-6" />
+
+      <h1 class="flex items-center justify-center text-3xl font-bold">
+        SVGPath
+      </h1>
+
+      <SVGPath class="mt-6 mb-6" />
     </template>
 
     <Sandbox v-else />

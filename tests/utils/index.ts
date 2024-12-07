@@ -33,3 +33,31 @@ export async function waitForMockCalls(fn: Mock, calls = 1, options: Parameters<
     throw err
   }
 }
+
+export function getTestComponentSVG(t: string) {
+  if (t === 'directive') {
+    return {
+      template: `
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="500"
+  height="500"
+  viewBox="0 0 24 24"
+>
+  <line
+    stroke="yellow"
+    :x1="10"
+    :x2="16"
+    :y1="22"
+    :y2="6"
+  />
+</svg>
+`,
+    }
+  }
+  return {
+    render: () => h(MotionComponent, {
+      is: 'svg',
+    }),
+  }
+}

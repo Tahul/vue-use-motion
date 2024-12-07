@@ -4,7 +4,12 @@ import { h, nextTick, ref } from 'vue'
 import { MotionComponent, MotionPlugin } from '../src'
 import MotionGroup from '../src/components/MotionGroup'
 import { intersect } from './utils/intersectionObserver'
-import { getTestComponent, useCompletionFn, waitForMockCalls } from './utils'
+import {
+  getTestComponent,
+  getTestComponentSVG,
+  useCompletionFn,
+  waitForMockCalls,
+} from './utils'
 
 // Register plugin
 config.global.plugins.push([
@@ -234,5 +239,145 @@ describe('`<MotionGroup>` component', async () => {
     expect(
       (wrapper.find('div#2').element as HTMLDivElement).style?.opacity,
     ).toEqual('0')
+  })
+})
+
+/**
+ * tests for svg path
+ * pathLegnth
+ * pathSpacing
+ * pathOffset
+ */
+describe.each([
+  { t: 'dirctive', name: 'v-motion svg element directive' },
+  { t: 'component', name: '<Motion> svg element directive' },
+])(`$name`, async ({ t }) => {
+  const TestComponentSVG = getTestComponentSVG(t)
+
+  it('svg variants number', async () => {
+    const onComplete = useCompletionFn()
+
+    const wrapper = mount(TestComponentSVG, {
+      props: {
+        initial: {
+          pathLength: 1,
+          pathSpacing: 1,
+          pathOffset: 2,
+        },
+        enter: {
+          pathLength: 2,
+          pathSpacing: 2,
+          pathOffset: 3,
+          transition: { onComplete },
+        },
+        duration: 10,
+      },
+    })
+
+    const el = wrapper.element as SVGElement
+    await nextTick()
+
+    // Renders initial variant
+    expect(el.style.pathLength).toEqual(1)
+    expect(el.style.pathSpacing).toEqual(1)
+    expect(el.style.pathOffset).toEqual(2)
+    expect(el.getAttribute('pathLength')).toBe('1')
+    expect(el.getAttribute('stroke-dashoffset')).toBe('2')
+    expect(el.getAttribute('stroke-dasharray')).toBe('1 1')
+
+    await waitForMockCalls(onComplete)
+
+    // Renders enter variant
+    expect(el.style.pathLength).toEqual(2)
+    expect(el.style.pathSpacing).toEqual(2)
+    expect(el.style.pathOffset).toEqual(3)
+    expect(el.getAttribute('pathLength')).toBe('1')
+    expect(el.getAttribute('stroke-dashoffset')).toBe('3')
+    expect(el.getAttribute('stroke-dasharray')).toBe('2 2')
+  })
+
+  it('svg variants px', async () => {
+    const onComplete = useCompletionFn()
+
+    const wrapper = mount(TestComponentSVG, {
+      props: {
+        initial: {
+          pathLength: '1px',
+          pathSpacing: '1px',
+          pathOffset: '2px',
+        },
+        enter: {
+          pathLength: '2px',
+          pathSpacing: '2px',
+          pathOffset: '3px',
+          transition: { onComplete },
+        },
+        duration: 10,
+      },
+    })
+
+    const el = wrapper.element as SVGElement
+    await nextTick()
+
+    // Renders initial variant
+    expect(el.style.pathLength).toEqual('1px')
+    expect(el.style.pathSpacing).toEqual('1px')
+    expect(el.style.pathOffset).toEqual('2px')
+    expect(el.getAttribute('pathLength')).toBe('1')
+    expect(el.getAttribute('stroke-dashoffset')).toBe('2px')
+    expect(el.getAttribute('stroke-dasharray')).toBe('1px 1px')
+
+    await waitForMockCalls(onComplete)
+
+    // Renders enter variant
+    expect(el.style.pathLength).toEqual('2px')
+    expect(el.style.pathSpacing).toEqual('2px')
+    expect(el.style.pathOffset).toEqual('3px')
+    expect(el.getAttribute('pathLength')).toBe('1')
+    expect(el.getAttribute('stroke-dashoffset')).toBe('3px')
+    expect(el.getAttribute('stroke-dasharray')).toBe('2px 2px')
+  })
+
+  it('svg event variants', async () => {
+    const onComplete = useCompletionFn()
+
+    const wrapper = mount(TestComponentSVG, {
+      props: {
+        initial: {
+          pathLength: 1,
+          pathSpacing: 1,
+          pathOffset: 2,
+        },
+        hovered: {
+          pathLength: 2,
+          pathSpacing: 2,
+          pathOffset: 4,
+          transition: { onComplete },
+        },
+        duration: 10,
+      },
+    })
+
+    const el = wrapper.element as SVGElement
+    await nextTick()
+
+    // Renders initial variant
+    expect(el.style.pathLength).toEqual(1)
+    expect(el.style.pathSpacing).toEqual(1)
+    expect(el.style.pathOffset).toEqual(2)
+    expect(el.getAttribute('pathLength')).toBe('1')
+    expect(el.getAttribute('stroke-dashoffset')).toBe('2')
+    expect(el.getAttribute('stroke-dasharray')).toBe('1 1')
+
+    await wrapper.trigger('mouseenter')
+    await waitForMockCalls(onComplete)
+
+    // Renders enter variant
+    expect(el.style.pathLength).toEqual(2)
+    expect(el.style.pathSpacing).toEqual(2)
+    expect(el.style.pathOffset).toEqual(4)
+    expect(el.getAttribute('pathLength')).toBe('1')
+    expect(el.getAttribute('stroke-dashoffset')).toBe('4')
+    expect(el.getAttribute('stroke-dasharray')).toBe('2 2')
   })
 })
